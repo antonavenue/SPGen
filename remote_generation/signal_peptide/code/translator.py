@@ -305,8 +305,9 @@ class SignalTranslator(object):
 
     @classmethod
     def load_model(cls, fname):
-        checkpoint = torch.load(fname)
+        checkpoint = torch.load(fname, map_location='cpu')
         model_opt, trans_opt, optim_opt = checkpoint['settings']
+        model_opt.cuda = False
         print(model_opt, trans_opt, optim_opt)
         clf = cls(model_opt, optim_opt, trans_opt)
         clf.model.load_state_dict(checkpoint['model'])
